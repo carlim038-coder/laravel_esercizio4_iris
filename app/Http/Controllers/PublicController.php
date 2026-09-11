@@ -1,7 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Mail\ContactMail;
+use Illuminate\Support\Facades\Mail;
 
 class PublicController extends Controller
 {
@@ -37,5 +40,24 @@ class PublicController extends Controller
         }
 
         return view('articles.show', ['article' => $article]);
+    }
+
+    // Metodo per mostrare la vista dei contatti
+    public function contactUs() {
+        return view('contact-us');
+    }
+
+    // Metodo per gestire l'invio del form
+    public function submit(Request $request) 
+    {
+        $name = $request->input('username');
+        $email = $request->input('email');
+        $usermessage = $request->input('message');
+
+        // Spedire la mail passando i dati al Mailable ContactMail
+        Mail::to($email)->send(new ContactMail($name, $email, $usermessage));
+
+        // Reindirizzamento alla home con il messaggio flash del professore
+        return redirect()->route('home')->with('mailInviata', 'mail inviata con successo, sarai ricontattato al più presto');
     }
 }

@@ -16,7 +16,6 @@
     <!-- Contenuto dinamico delle pagine -->
     <main>
         {{ $slot }}
-    </main>
-
+    </main> 
 </body>
 </html>
